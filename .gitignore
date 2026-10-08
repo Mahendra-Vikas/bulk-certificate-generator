@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+ENV/
+.env
+.env.*
+
+# Certificates output
+certificates/*.pdf
+
+# Node
+**/node_modules/
+**/dist/
+**/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+# Local database
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated certificate files
+storage/certificates/*

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Co-Dev Club Certificate Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy-dark: #0a0e27;
+            --navy-medium: #131937;
+            --indigo: #4f46e5;
+            --violet: #7c3aed;
+            --blue-light: #60a5fa;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1629 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--indigo), transparent);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--violet), transparent);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--blue-light), transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(100px, -100px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-100px, 100px) scale(0.9);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(10, 14, 39, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .nav-title {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 0.02em;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #ffffff 0%, #a5b4fc 25%, #ffffff 50%, #7c3aed 75%, #ffffff 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            text-shadow: 0 0 20px rgba(165, 180, 252, 0.25);
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .logo-left,
+        .logo-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Make the Co-Dev logo pop on dark nav */
+        .logo-right .logo-image {
+            background: #ffffff;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* Mobile nav tweaks */
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1rem;
+            }
+
+            /* Hide the college + club names on phones; keep logos + portal title */
+            .logo-left span,
+            .logo-right span {
+                display: none;
+            }
+
+            .logo-image {
+                width: 34px;
+                height: 34px;
+                border-radius: 8px;
+            }
+
+            .nav-title {
+                font-size: 1.05rem;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--indigo), var(--violet));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Landing Page */
+        .landing-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .badge::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            border-radius: 50%;
+            font-size: 0.75rem;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .subtitle {
+            font-size: 1.35rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 400;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.1rem 3rem;
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(79, 70, 229, 0.3);
+            animation: fadeInUp 1s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(79, 70, 229, 0.5);
+        }
+
+        /* Certificate Form Page */
+        .form-page {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 2rem;
+        }
+
+        .form-page.active {
+            display: flex;
+        }
+        
+        /* Toggle Styles */
+        .toggle-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: absolute;
+            right: 2rem;
+            top: 8rem;
+            z-index: 2;
+        }
+        
+        .toggle-button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .toggle-button.active {
+            border-color: var(--indigo);
+            background: rgba(79, 70, 229, 0.2);
+            color: white;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .toggle-button:hover {
+            border-color: var(--indigo);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .form-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--indigo);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5);
+        }
+
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        /* Certificate Preview */
+        .certificate-preview {
+            position: relative;
+            animation: fadeInRight 0.8s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .preview-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .preview-card:hover {
+            box-shadow: 0 25px 60px rgba(79, 70, 229, 0.2), 0 0 20px rgba(124, 58, 237, 0.1);
+            transform: translateY(-8px);
+        }
+
+        .preview-card:hover::before {
+            opacity: 1;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .preview-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--navy-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .preview-content {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .preview-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin-bottom: 1rem;
+        }
+
+        .preview-details {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .form-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .certificate-preview {
+                display: none;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .form-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo-left">
+                <img class="logo-image" src="/static/logo.jpg" alt="College logo" />
+                <span>Graphic Era Hill University</span>
+            </div>
+            <div class="nav-title">Certificate Portal</div>
+            <div class="logo-right">
+                <img class="logo-image" src="/static/co-dev_logo.png" alt="Co-Dev logo" />
+                <span>Co-Dev Club</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <div class="hero-section">
+            <div class="badge">
+                Official Digital Certification Platform
+            </div>
+            <h1>Certificate Portal</h1>
+            <p class="subtitle">Securely Download and Verify Your Official Certificates</p>
+            <button class="cta-button" onclick="showFormPage()">Get Certificate</button>
+        </div>
+    </div>
+
+    <!-- Certificate Form Page -->
+    <div class="form-page" id="formPage">
+        <div class="toggle-container">
+            <button class="toggle-button active" id="studentToggle" onclick="switchToStudent()">Student</button>
+            <button class="toggle-button" id="managementToggle" onclick="switchToManagement()">Management</button>
+        </div>
+        
+        <div class="form-container">
+            <!-- Student Form -->
+            <div id="studentForm" class="student-form">
+                <div class="form-card">
+                    <h2 class="form-title">Find Your Certificate</h2>
+                    <form id="certificateForm">
+                        <div class="form-group">
+                            <input type="text" id="studentName" class="form-input" placeholder="Student Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="studentId" class="form-input" placeholder="Student ID" required>
+                        </div>
+                        <button type="submit" class="submit-button" id="submitBtn">
+                            Download Certificate
+                        </button>
+                        <div class="loader" id="loader"></div>
+                    </form>
+                    <div id="message" class="message"></div>
+                </div>
+
+                <div class="certificate-preview">
+                    <div class="preview-card">
+                        <img src="/static/certificate_template.jpg" alt="Certificate template" style="width: 100%; height: auto; display: block; border-radius: 20px;" />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Management Form -->
+            <div id="managementForm" class="management-form" style="display: none;">
+                <div class="form-card">
+                    <h2 class="form-title">Management Team Certificate</h2>
+                    <form id="managementCertificateForm">
+                        <div class="form-group">
+                            <input type="text" id="managementName" class="form-input" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="managementId" class="form-input" placeholder="College ID" required>
+                        </div>
+                        <button type="submit" class="submit-button" id="managementSubmitBtn">
+                            Download Certificate
+                        </button>
+                        <div class="loader" id="managementLoader"></div>
+                    </form>
+                    <div id="managementMessage" class="message"></div>
+                </div>
+
+                <div class="certificate-preview">
+                    <div class="preview-card">
+                        <img src="/static/CertificateManagement.jpeg" alt="Management Certificate template" style="width: 100%; height: auto; display: block; border-radius: 20px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showFormPage() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('formPage').classList.add('active');
+        }
+        
+        function switchToStudent() {
+            document.getElementById('studentForm').style.display = '';
+            document.getElementById('managementForm').style.display = 'none';
+            document.getElementById('studentToggle').classList.add('active');
+            document.getElementById('managementToggle').classList.remove('active');
+        }
+        
+        function switchToManagement() {
+            document.getElementById('studentForm').style.display = 'none';
+            document.getElementById('managementForm').style.display = '';
+            document.getElementById('studentToggle').classList.remove('active');
+            document.getElementById('managementToggle').classList.add('active');
+        }
+
+        // Auto-detect API base URL for different environments
+        const getApiBaseUrl = () => {
+            const currentHost = window.location.hostname;
+            const currentPort = window.location.port;
+            
+            // Local development: FastAPI on port 8000
+            if ((currentHost === 'localhost' || currentHost === '127.0.0.1') && currentPort === '8000') {
+                return '';  // Use relative paths
+            }
+            
+            // Live Server or other local development (different port)
+            if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+                return 'http://127.0.0.1:8000';
+            }
+            
+            // Production: Render backend (or set via environment variable)
+            if (typeof window.API_BASE !== 'undefined') {
+                return window.API_BASE;  // Can be injected by build process
+            }
+            
+            // For Vercel + Render: replace with your actual Render URL
+            // Format: https://certificate-project.onrender.com (or your actual Render URL)
+            return '';  // Default to same domain for Now (if backend is on same domain)
+        };
+        
+        const API_BASE = getApiBaseUrl();
+        
+        // Student Form Handler
+        const form = document.getElementById('certificateForm');
+        const messageDiv = document.getElementById('message');
+        const loader = document.getElementById('loader');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+
+            if (!studentName || !studentId) {
+                showMessage('Please enter both name and student ID', 'error');
+                return;
+            }
+
+            // Show loader
+            submitBtn.style.display = 'none';
+            loader.style.display = 'block';
+            messageDiv.style.display = 'none';
+
+            try {
+                // Verify student
+                const verifyUrl = `${API_BASE}/verify?name=${encodeURIComponent(studentName)}&student_id=${encodeURIComponent(studentId)}`;
+                const verifyResponse = await fetch(verifyUrl);
+
+                if (!verifyResponse.ok) {
+                    throw new Error('Student not found. Please check your name and student ID.');
+                }
+
+                const verifyData = await verifyResponse.json();
+
+                // Download certificate
+                const certUrl = `${API_BASE}/certificate?name=${encodeURIComponent(studentName)}&student_id=${encodeURIComponent(studentId)}`;
+                window.location.href = certUrl;
+
+                showMessage(`✓ Certificate found for ${verifyData.name}! Download started...`, 'success');
+
+            } catch (error) {
+                showMessage(error.message, 'error');
+            } finally {
+                submitBtn.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+        
+        // Management Form Handler
+        const managementForm = document.getElementById('managementCertificateForm');
+        const managementMessageDiv = document.getElementById('managementMessage');
+        const managementLoader = document.getElementById('managementLoader');
+        const managementSubmitBtn = document.getElementById('managementSubmitBtn');
+
+        managementForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const managementName = document.getElementById('managementName').value.trim();
+            const managementId = document.getElementById('managementId').value.trim();
+
+            if (!managementName || !managementId) {
+                showManagementMessage('Please enter both name and college ID', 'error');
+                return;
+            }
+
+            // Show loader
+            managementSubmitBtn.style.display = 'none';
+            managementLoader.style.display = 'block';
+            managementMessageDiv.style.display = 'none';
+
+            try {
+                // Verify management member
+                const verifyUrl = `${API_BASE}/verify-management?name=${encodeURIComponent(managementName)}&mgmt_id=${encodeURIComponent(managementId)}`;
+                const verifyResponse = await fetch(verifyUrl);
+
+                if (!verifyResponse.ok) {
+                    throw new Error('Management member not found. Please check your name and college ID.');
+                }
+
+                const verifyData = await verifyResponse.json();
+
+                // Download certificate
+                const certUrl = `${API_BASE}/certificate-management?name=${encodeURIComponent(managementName)}&mgmt_id=${encodeURIComponent(managementId)}`;
+                window.location.href = certUrl;
+
+                showManagementMessage(`✓ Certificate found for ${verifyData.name}! Download started...`, 'success');
+
+            } catch (error) {
+                showManagementMessage(error.message, 'error');
+            } finally {
+                managementSubmitBtn.style.display = 'block';
+                managementLoader.style.display = 'none';
+            }
+        });
+
+        function showManagementMessage(text, type) {
+            managementMessageDiv.textContent = text;
+            managementMessageDiv.className = `message ${type}`;
+            managementMessageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
